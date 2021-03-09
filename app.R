@@ -13,6 +13,7 @@ library(shinyWidgets)
 library(magrittr)
 library(tableHTML)
 library(shinythemes)
+library(shinyjs)
 
 
 datosA=read.csv("DatosNBA.csv", sep=";", dec=".")
@@ -55,7 +56,7 @@ dataPanel <- tabPanel("Data Players",     tags$style(HTML("
                                                  label = "Select the Age of the players",
                                                  multiple = TRUE,
                                                  choices = datos_Age,
-                                                 selected = c(datos_Age[1])
+                                                 selected = c(datos_Age)
                                                )  , 
                                                selectInput(
                                                  inputId = "selTm",
@@ -237,11 +238,13 @@ server <- function(input, output, session) {
         # can happen when deployed).
         tempReport <- file.path(tempdir(), "report.Rmd")
         file.copy("report.Rmd", tempReport, overwrite = TRUE)
-        
+        tempData <- file.path(tempdir(), "DatosNBA.csv")
+        file.copy("DatosNBA.csv", tempData, overwrite = TRUE)
         # Set up parameters to pass to Rmd document
         params <- list(
           Namex=isolate(input$select2),
-          Namey=isolate(input$select3)
+          Namey=isolate(input$select3),
+          datos=datos
           )
         
         # Knit the document, passing in the `params` list, and eval it in a
