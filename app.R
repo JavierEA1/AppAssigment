@@ -16,7 +16,7 @@ library(shinythemes)
 library(shinyjs)
 
 
-datosA=read.csv("DatosNBA.csv", sep=";", dec=".")
+datosA=read.csv(url("https://raw.githubusercontent.com/JavierEA1/nbadataset/main/DatosNBA.csv"), sep=";", dec=".")
 datos=datosA[,2:30]
 datos %<>% mutate_at(c("Player", "Pos","Age","Tm"), as.factor)
 datos_Player = levels(datos$Player) %>% str_sort()
