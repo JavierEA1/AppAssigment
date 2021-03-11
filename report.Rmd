@@ -1,11 +1,14 @@
-title: "report"
+---
+title: "Report"
 author: "Javier Esteban Aragoneses"
 date: "6/3/2019"
 output: html_document
 params: 
- Namex:NA
- Namey:NA
- datos:NA
+   Namex: NA
+   Namey: NA
+   datos: NA
+   NameHist: NA
+   Namegg: NA
 ---
 ```{r include=FALSE}
 library(shiny)
@@ -15,11 +18,7 @@ library(magrittr)
 library(tableHTML)
 
 ```
-```{r}
-dist <- eval(parse(text=paste(params$Namex)))
-dist2 <- eval(parse(text=paste(params$Namey)))
 
-```
 
 ```{r include=FALSE}
 
@@ -27,13 +26,31 @@ datos=params$datos
 
 ```
 
-
+```{r echo=FALSE}
+h=datos%>% select(params$NameHist)
+h=as.vector(as.matrix(h))
+hist(h,xlab =params$NameHist,main="Histrogram of the stat selected
+")
+```
 
 ```{r echo=FALSE}
 
-x=datos%>% select(dist)
-y=datos%>% select(dist2)
-
-    plot(x=x,y=y,main="Plot of data player",xlab=Namex,ylab=input$select3,col = "#00AFBB")
+x=datos%>% select(params$Namex)
+y=datos%>% select(params$Namey)
+x=as.vector(as.matrix(x))
+y=as.vector(as.matrix(y))
+plot(x=x,y=y,main="Plot of data player",xlab=params$Namex,ylab=params$Namey,col = "#00AFBB")
 ```
+
+```{r echo=FALSE}
+GG=datos%>% select(params$Namegg)
+GG=as.vector(as.matrix(GG))
+
+datos %>% ggplot(aes(x = GG)) +  
+        geom_density(aes(group = Pos, 
+                         colour = Pos, 
+                         fill = Pos),
+                     alpha = 0.2)
+```
+
 

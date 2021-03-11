@@ -244,6 +244,8 @@ server <- function(input, output, session) {
         params <- list(
           Namex=isolate(input$select2),
           Namey=isolate(input$select3),
+          NameHist=isolate(input$select),
+          Namegg=isolate(input$select4),
           datos=datos
           )
         
@@ -258,7 +260,8 @@ server <- function(input, output, session) {
     )
     
     
-    }
+}
+
     
     
     
