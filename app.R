@@ -37,6 +37,7 @@ dataPanel <- tabPanel("Data Players",     tags$style(HTML("
     color: yellow;
 }")),
                       
+                      
                       tabsetPanel(type = "tabs",id="SET",
                                              
                                   tabPanel("Table",
@@ -163,7 +164,27 @@ plotPanel <- tabPanel("Densities",
                           
                           
                       )
-
+References<-tabPanel("References",
+                     fluidPage(
+                       useShinyjs(),
+                       actionButton("button", "Hide/Show references"),
+                       div(id = "hello", 
+                           p(),
+                           p(),
+                           p("https://www.basketball-reference.com/leagues/NBA_2020_per_game.html", tags$style(HTML("
+      @import url('https://fonts.googleapis.com/css2?family=Yusei+Magic&display=swap');
+       
+                a{color: black !important;}
+                            )
+                        )
+                  )"
+               )
+            )
+        )
+                     
+     )
+  )
+)
 myHeader <- div(
     
     selectInput(
@@ -200,7 +221,8 @@ ui <- navbarPage("shiny App",
             
                  dataPanel,
 
-                 plotPanel
+                 plotPanel,
+                 References
 )
 
 
@@ -212,6 +234,11 @@ server <- function(input, output, session) {
     b=reactive(as.vector(as.matrix(datos%>% select(input$select2))))
     c=reactive(as.vector(as.matrix(datos%>% select(input$select3))))
     d=reactive(as.vector(as.matrix(datos%>% select(input$select4))))
+    
+    observeEvent(input$button, {
+      toggle("hello")
+    })
+    
     
     output$histSummary <- renderPlot(hist(a(),main="Histogram of data player",xlab=input$select))
     output$PlotPlayer <- renderPlot(plot(x=b(),y=c(),main="Plot of data player",xlab=input$select2,ylab=input$select3,col = "#00AFBB"))
